@@ -8,6 +8,7 @@ and each column represents a single day across all patients.
 """
 
 import numpy as np
+import math
 
 
 def load_csv(filename):
@@ -46,6 +47,16 @@ def daily_min(data):
     :returns: An array of minimum values of measurements for each day.
     """
     return np.min(data, axis=0)
+
+
+def std_dev(data):
+    """
+    Calculate the standard deviation of a 2D inflammation data array.
+
+    :param data: A 2D data array with inflammation data.
+    :returns: An array of standard deviation values for each day.
+    """
+    return np.std(data, axis=0)
 
 
 def patient_normalise(data):
