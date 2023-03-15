@@ -103,9 +103,16 @@ def daily_above_threshold(patient_num, data, threshold):
     return reduce(lambda a, b: a + 1 if b else a, above_threshold, 0)
 
 
-class Person:
-    """A person."""
+class Observation:
+    def __init__(self, day, value):
+        self.day = day
+        self.value = value
 
+    def __str__(self):
+        return self.value
+
+
+class Person:
     def __init__(self, name):
         self.name = name
 
@@ -116,32 +123,22 @@ class Person:
 class Patient(Person):
     """A patient in an inflammation study."""
 
-    def __init__(self, name):
+    def __init__(self, name, observations=None):
         super().__init__(name)
+
         self.observations = []
+        if observations is not None:
+            self.observations = observations
 
     def add_observation(self, value, day=None):
         if day is None:
             try:
                 day = self.observations[-1].day + 1
+
             except IndexError:
                 day = 0
+
         new_observation = Observation(day, value)
+
         self.observations.append(new_observation)
         return new_observation
-
-
-class Doctor(Person):
-    """A doctor in an inflammation study."""
-
-    def __init__(self, name):
-        super().__init__(name)
-        self.patients = []
-
-    def add_patient(self, new_patient):
-        # A crude check by name if this patient is already looked after
-        # by this doctor before adding them
-        for patient in self.patients:
-            if patient.name == new_patient.name:
-                return
-        self.patients.append(new_patient)
