@@ -44,6 +44,7 @@ def test_daily_min(test, expected):
 
 
 @pytest.mark.parametrize(
+<<<<<<< HEAD
     "test, expected",
     [
         ([[0, 0, 0], [0, 0, 0], [0, 0, 0]], [0, 0, 0]),
@@ -54,6 +55,38 @@ def test_std_dev(test, expected):
     """Test standard deviation function works for zeroes, positive integers, mix of positive/negative integers."""
     from inflammation.models import std_dev
     npt.assert_almost_equal(std_dev(np.array(test)), np.array(expected), decimal=2)
+=======
+    "test, expected", "expect_raises",
+    [
+        (
+            'hello',
+            None,
+            TypeError,
+        ),
+        (
+            3,
+            None,
+            TypeError,
+         ),
+        (
+            ([[0, 0, 0], [0, 0, 0], [0, 0, 0]], [0, 0, 0]),
+            ([[4, 2, 5], [1, 6, 2], [4, 1, 9]], [1.41421356, 2.1602469, 2.86744176]),
+            ([[4, -2, 5], [1, -6, 2], [-4, -1, 9]], [3.29983165, 2.1602469, 2.86744176]),
+        )
+    ])
+
+def test_patient_normalise(test, expected, expect_raises):
+    """Test normalisation works for arrays of one and positive integers."""
+    from inflammation.models import patient_normalise
+    if isinstance(test, list):
+        test = np.array(test)
+    if expect_raises is not None:
+        with pytest.raises(expect_raises):
+            npt.assert_almost_equal(patient_normalise(test), np.array(expected), decimal=2)
+    else:
+        npt.assert_almost_equal(patient_normalise(test), np.array(expected), decimal=2)
+
+>>>>>>> 8ab658d013e8f4dddec342870fe75ba44958ab62
 
 
 def test_daily_min_string():
