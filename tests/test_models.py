@@ -43,6 +43,39 @@ def test_daily_min(test, expected):
     npt.assert_array_equal(daily_min(np.array(test)), np.array(expected))
 
 
+@pytest.mark.parametrize(
+    "test, expected", "expect_raises",
+    [
+        (
+            'hello',
+            None,
+            TypeError,
+        ),
+        (
+            3,
+            None,
+            TypeError,
+         ),
+        (
+            ([[0, 0, 0], [0, 0, 0], [0, 0, 0]], [0, 0, 0]),
+            ([[4, 2, 5], [1, 6, 2], [4, 1, 9]], [1.41421356, 2.1602469, 2.86744176]),
+            ([[4, -2, 5], [1, -6, 2], [-4, -1, 9]], [3.29983165, 2.1602469, 2.86744176]),
+        )
+    ])
+
+def test_patient_normalise(test, expected, expect_raises):
+    """Test normalisation works for arrays of one and positive integers."""
+    from inflammation.models import patient_normalise
+    if isinstance(test, list):
+        test = np.array(test)
+    if expect_raises is not None:
+        with pytest.raises(expect_raises):
+            npt.assert_almost_equal(patient_normalise(test), np.array(expected), decimal=2)
+    else:
+        npt.assert_almost_equal(patient_normalise(test), np.array(expected), decimal=2)
+
+
+
 def test_daily_min_string():
     """Test for TypeError when passing strings"""
     from inflammation.models import daily_min
